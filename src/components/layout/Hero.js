@@ -23,7 +23,7 @@ const Hero = () => {
               Order now
               <Right />
             </button>
-            <button className="flex gap-2 py-2 text-gray-600 font-semibold">
+            <button className="flex outline gap-2 py-2 px-4 rounded-full text-gray-600 font-semibold">
               Learn more
               <Right />
             </button>
