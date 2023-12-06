@@ -1,6 +1,6 @@
 import React from "react";
 
-const SectionHeaders = (subHeader, mainHeader) => {
+const SectionHeaders = ({ subHeader, mainHeader }) => {
   return (
     <>
       <div className="text-center mb-4">
