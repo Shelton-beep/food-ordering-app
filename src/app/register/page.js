@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 import CheckCircle from "../../components/icons/CheckCircle";
 import XCircle from "../../components/icons/XCircle";
 
@@ -84,7 +85,11 @@ const RegisterPage = () => {
             <div className="my-4 text-center text-gray-500">
               or login with provider
             </div>
-            <button className="flex gap-4 justify-center">
+            <button
+              type="button"
+              className="flex gap-4 justify-center"
+              onClick={() => signIn("google", { callbackUrl: "/" })}
+            >
               <Image
                 src={"/googleImage.png"}
                 alt="LogIn with google"
