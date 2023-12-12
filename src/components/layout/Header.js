@@ -5,6 +5,12 @@ import Link from "next/link";
 const Header = () => {
   const session = useSession();
   const status = session.status;
+  const userData = session.data?.user;
+  let userName = userData?.name || userData?.email;
+
+  if (userName && userName.includes(" ")) {
+    userName = userName.split(" ")[0];
+  }
 
   return (
     <>
@@ -20,12 +26,20 @@ const Header = () => {
         </nav>
         <nav className="flex items-center gap-8 text-gray-500 font-semibold">
           {status === "authenticated" && (
-            <button
-              onClick={() => signOut()}
-              className="bg-primary text-white rounded-full px-8 py-2"
-            >
-              Logout
-            </button>
+            <>
+              <Link
+                className="whitespace-nowrap hover:text-blue-500"
+                href={"/profile"}
+              >
+                Hello, {userName}
+              </Link>
+              <button
+                onClick={() => signOut()}
+                className="bg-primary text-white rounded-full px-8 py-2"
+              >
+                Logout
+              </button>
+            </>
           )}
           {status === "unauthenticated" && (
             <>
