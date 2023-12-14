@@ -15,7 +15,10 @@ const MenuItem = () => {
         </div>
         <h4 className="font-semibold my-3 text-xl">BBQ Pizza</h4>
         <p className="text-gray-500 text-sm">Lorem...</p>
-        <button className="bg-primary m-4 text-white rounded-full px-8 py-2">
+        <button
+          type="button"
+          className="bg-primary mx-auto m-4 text-white rounded-full px-8 py-2"
+        >
           Add to Cart $12
         </button>
       </div>

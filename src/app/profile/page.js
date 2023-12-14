@@ -3,12 +3,11 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const ProfilePage = () => {
   const session = useSession();
   const [userName, setUserName] = useState("");
-  const [saved, setSaved] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
   const { status } = session;
 
   useEffect(() => {
@@ -19,19 +18,22 @@ const ProfilePage = () => {
 
   async function handleProfileInfoUpdate(ev) {
     ev.preventDefault();
-    setSaved(false);
-    setIsSaving(true);
-    const response = await fetch("api/profile", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: userName }),
+    const savingPromise = new Promise(async (resolve, reject) => {
+      const response = await fetch("api/profile", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: userName }),
+      });
+      if (response.ok) {
+        resolve();
+      } else reject();
     });
 
-    setIsSaving(false);
-
-    if (response.ok) {
-      setSaved(true);
-    }
+    toast.promise(savingPromise, {
+      loading: "Saving...",
+      success: "Profile Saved!",
+      error: "Something went wrong try again",
+    });
   }
 
   async function handleFileChange(ev) {
@@ -63,16 +65,6 @@ const ProfilePage = () => {
         <h1 className="text-center text-primary mb-4 text-4xl">Profile</h1>
 
         <div className="max-w-md mx-auto ">
-          {isSaving && (
-            <h2 className="text-center bg-blue-100 p-4 rounded-lg border border-blue-300">
-              Saving...
-            </h2>
-          )}
-          {saved && (
-            <h2 className="text-center bg-green-100 p-4 rounded-lg border border-green-300">
-              Profile Saved!
-            </h2>
-          )}
           <div className="flex gap-2 items-center">
             <div className="p-2 rounded-lg items-center justify-center">
               <div>
@@ -81,6 +73,7 @@ const ProfilePage = () => {
                   src={userImage}
                   width={100}
                   height={100}
+                  priority
                   alt="avatar"
                 />
                 <label>
